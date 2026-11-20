@@ -1,0 +1,43 @@
+includes:
+    - vendor/mahocommerce/maho-phpstan-plugin/extension.neon
+    - vendor/phpstan/phpstan/conf/bleedingEdge.neon
+    - vendor/phpstan/phpstan-deprecation-rules/rules.neon
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
+
+parameters:
+    strictRules:
+        allRules: false
+        matchingInheritedMethodNames: true
+        disallowedBacktick: true
+
+    level: 8
+    tmpDir: .phpstan.cache
+    reportUnmatchedIgnoredErrors: true
+    checkFunctionNameCase: true
+    checkInternalClassCaseSensitivity: true
+    checkMissingOverrideMethodAttribute: true
+    treatPhpDocTypesAsCertain: false
+    reportMaybesInPropertyPhpDocTypes: true
+    reportMaybesInMethodSignatures: false
+
+    fileExtensions:
+        - php
+        - phtml
+
+    paths:
+        - app
+
+    excludePaths:
+        analyse:
+            - vendor/mahocommerce/maho-phpstan-plugin/mock
+            # Templates stay out of the analysis: the one of this module is a copy of
+            # checkout/onepage/review/item.phtml and echoes what the engine helpers
+            # return (mixed), which the core templates are not checked for either.
+            - app/design
+        analyseAndScan:
+            - vendor/mahocommerce/maho-phpstan-plugin/mock
+
+    ignoreErrors:
+        -
+            identifier: property.missingOverride
+            reportUnmatched: false

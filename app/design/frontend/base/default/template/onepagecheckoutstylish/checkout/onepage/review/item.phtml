@@ -1,0 +1,152 @@
+<?php
+/**
+ * SPDX-FileCopyrightText: 2026 Empiricompany
+ * SPDX-FileCopyrightText: 2024-2026 Maho <https://mahocommerce.com>
+ * SPDX-FileCopyrightText: 2021-2024 The OpenMage Contributors <https://openmage.org>
+ * SPDX-FileCopyrightText: 2006-2020 Magento, Inc. <https://magento.com>
+ * SPDX-License-Identifier: AFL-3.0
+ * @package MM_OnepageCheckoutStylish
+ */
+
+/**
+ * Copy of checkout/onepage/review/item.phtml with the product image in the first
+ * cell, registered from the module layout only while "Product image in the order
+ * summary" is on. The rest of the row is the engine's markup, untouched: the price,
+ * quantity and subtotal cells keep their classes and their data-rwd-label.
+ *
+ * The thumbnail comes from the item renderer (getProductThumbnail()) and uses the
+ * "thumbnail" slot of the theme, so the module stays theme agnostic.
+ *
+ * The quantity sits on the thumbnail as a badge, next to (not inside) the link, so
+ * it stays readable when the stylesheet hides the column of the quantity. The cells
+ * of the price and of the quantity carry a class of the module: with the badge on,
+ * the stylesheet drops them and the row keeps the product and the total only.
+ *
+ * @var Mage_Checkout_Block_Cart_Item_Renderer $this
+ */
+?>
+<?php
+$_item = $this->getItem();
+$_weeeHelper = Mage::helper('weee');
+$_checkoutHelper = $this->helper('checkout');
+$_weeeApplied = $_weeeHelper->getApplied($_item);
+$_weeeAmount = $_item->getWeeeTaxAppliedAmount();
+?>
+<tr class="onepagecheckoutstylish-review-row">
+    <td>
+        <div class="onepagecheckoutstylish-review-item">
+            <div class="onepagecheckoutstylish-review-media">
+                <a class="onepagecheckoutstylish-review-image"
+                   href="<?= $this->escapeUrl($this->getProductUrl()) ?>"
+                   title="<?= $this->escapeHtml($this->getProductName()) ?>"
+                   tabindex="-1" aria-hidden="true">
+                    <img <?= $this->getProductThumbnail()->getImgAttributes('thumbnail') ?> alt="<?= $this->escapeHtml($this->getProductName()) ?>">
+                </a>
+                <?php $_quantity = $_item->getQty() * 1 ?>
+                <span class="onepagecheckoutstylish-review-count"
+                      aria-label="<?= $this->quoteEscape($this->__('Qty')) ?>: <?= $_quantity ?>"><?= $_quantity ?></span>
+            </div>
+            <div class="onepagecheckoutstylish-review-details">
+                <h3 class="product-name"><?= $this->escapeHtml($this->getProductName()) ?></h3>
+                <?php if ($_options = $this->getOptionList()): ?>
+                <dl class="item-options">
+                    <?php foreach ($_options as $_option): ?>
+                    <?php $_formatedOptionValue = $this->getFormatedOptionValue($_option) ?>
+                    <dt><?= $this->escapeHtml($_option['label']) ?></dt>
+                    <dd<?php if (isset($_formatedOptionValue['full_view'])): ?> class="truncated"<?php endif ?>><?= $_formatedOptionValue['value'] ?>
+                        <?php if (isset($_formatedOptionValue['full_view'])): ?>
+                        <div class="truncated_full_value">
+                            <dl class="item-options">
+                                <dt><?= $this->escapeHtml($_option['label']) ?></dt>
+                                <dd><?= $_formatedOptionValue['full_view'] ?></dd>
+                            </dl>
+                        </div>
+                        <?php endif ?>
+                    </dd>
+                    <?php endforeach ?>
+                </dl>
+                <?php endif ?>
+                <?php if ($addtInfoBlock = $this->getProductAdditionalInformationBlock()): ?>
+                    <?= $addtInfoBlock->setItem($_item)->toHtml() ?>
+                <?php endif ?>
+            </div>
+        </div>
+    </td>
+
+    <?php if ($this->helper('tax')->displayCartPriceExclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+    <?php $_labelAppend = $this->helper('tax')->displayCartBothPrices() ? ' ' . $this->__('(Excl. Tax)') : ''; ?>
+    <td class="a-right onepagecheckoutstylish-review-price" data-rwd-label="<?= $this->__('Price') . $_labelAppend ?>">
+        <span class="cart-price">
+            <?php if ($_weeeHelper->typeOfDisplay($_item, [0, 1, 4], 'sales') && $_weeeAmount): ?>
+                <?= $_checkoutHelper->formatPrice($_item->getCalculationPrice() + $_weeeAmount + $_item->getWeeeTaxDisposition()) ?>
+            <?php elseif ($_weeeHelper->typeOfDisplay($_item, 2, 'sales') && $_weeeAmount): ?>
+                <?= $_checkoutHelper->formatPrice($_item->getCalculationPrice() + $_weeeAmount + $_item->getWeeeTaxDisposition()) ?>
+            <?php else: ?>
+                <?= $_checkoutHelper->formatPrice($_item->getCalculationPrice()) ?>
+            <?php endif ?>
+        </span>
+        <?php if ($_weeeApplied && $_weeeHelper->typeOfDisplay($_item, [1, 2], 'sales') && $_weeeAmount): ?>
+            <span class="weee-info" data-tooltip="<?= strip_tags($_checkoutHelper->formatPrice($_item->getCalculationPrice())) ?><?php foreach ($_weeeApplied as $tax): ?> + <?= $this->escapeHtml($tax['title']) ?> <?= strip_tags($_checkoutHelper->formatPrice($tax['amount'])) ?><?php endforeach ?>"><?= $this->getIconSvg('info-circle') ?></span>
+        <?php endif ?>
+    </td>
+    <?php endif ?>
+
+    <?php if ($this->helper('tax')->displayCartPriceInclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+    <?php $_labelAppend = $this->helper('tax')->displayCartBothPrices() ? ' ' . $this->__('(Incl. Tax)') : ''; ?>
+    <td class="a-right onepagecheckoutstylish-review-price" data-rwd-label="<?= $this->__('Price') . $_labelAppend ?>">
+        <?php $_incl = $_checkoutHelper->getPriceInclTax($_item); ?>
+        <span class="cart-price">
+            <?php if ($_weeeHelper->typeOfDisplay($_item, [0, 1, 4], 'sales') && $_weeeAmount): ?>
+                <?= $_checkoutHelper->formatPrice($_incl + $_weeeHelper->getWeeeTaxInclTax($_item)) ?>
+            <?php elseif ($_weeeHelper->typeOfDisplay($_item, 2, 'sales') && $_weeeAmount): ?>
+                <?= $_checkoutHelper->formatPrice($_incl + $_weeeHelper->getWeeeTaxInclTax($_item)) ?>
+            <?php else: ?>
+                <?= $_checkoutHelper->formatPrice($_incl - $_item->getWeeeTaxDisposition()) ?>
+            <?php endif ?>
+        </span>
+        <?php if ($_weeeApplied && $_weeeHelper->typeOfDisplay($_item, [1, 2], 'sales') && $_weeeAmount): ?>
+            <span class="weee-info" data-tooltip="<?= strip_tags($_checkoutHelper->formatPrice($_incl - $_item->getWeeeTaxDisposition())) ?><?php foreach ($_weeeApplied as $tax): ?> + <?= $this->escapeHtml($tax['title']) ?> <?= strip_tags($_checkoutHelper->formatPrice($tax['amount_incl_tax'])) ?><?php endforeach ?>"><?= $this->getIconSvg('info-circle') ?></span>
+        <?php endif ?>
+    </td>
+    <?php endif ?>
+
+    <td class="a-center onepagecheckoutstylish-review-qty" data-rwd-label="<?= $this->__('Qty') ?>"><?= $_quantity ?></td>
+
+    <!-- sub total starts here -->
+    <?php if ($this->helper('tax')->displayCartPriceExclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+    <?php $_labelAppend = $this->helper('tax')->displayCartBothPrices() ? ' ' . $this->__('(Excl. Tax)') : ''; ?>
+    <td class="a-right" data-rwd-label="<?= $this->__('Subtotal') . $_labelAppend ?>">
+        <span class="cart-price">
+            <?php if ($_weeeHelper->typeOfDisplay($_item, [0, 1, 4], 'sales') && $_weeeAmount): ?>
+                <?= $_checkoutHelper->formatPrice($_item->getRowTotal() + $_item->getWeeeTaxAppliedRowAmount() + $_item->getWeeeTaxRowDisposition()) ?>
+            <?php elseif ($_weeeHelper->typeOfDisplay($_item, 2, 'sales') && $_weeeAmount): ?>
+                <?= $_checkoutHelper->formatPrice($_item->getRowTotal() + $_item->getWeeeTaxAppliedRowAmount() + $_item->getWeeeTaxRowDisposition()) ?>
+            <?php else: ?>
+                <?= $_checkoutHelper->formatPrice($_item->getRowTotal()) ?>
+            <?php endif ?>
+        </span>
+        <?php if ($_weeeApplied && $_weeeHelper->typeOfDisplay($_item, [1, 2], 'sales') && $_weeeAmount): ?>
+            <span class="weee-info" data-tooltip="<?= strip_tags($_checkoutHelper->formatPrice($_item->getRowTotal())) ?><?php foreach ($_weeeApplied as $tax): ?> + <?= $this->escapeHtml($tax['title']) ?> <?= strip_tags($_checkoutHelper->formatPrice($tax['row_amount'])) ?><?php endforeach ?>"><?= $this->getIconSvg('info-circle') ?></span>
+        <?php endif ?>
+    </td>
+    <?php endif ?>
+
+    <?php if ($this->helper('tax')->displayCartPriceInclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+    <?php $_labelAppend = $this->helper('tax')->displayCartBothPrices() ? ' ' . $this->__('(Incl. Tax)') : ''; ?>
+    <td class="a-right" data-rwd-label="<?= $this->__('Subtotal') . $_labelAppend ?>">
+        <?php $_inclSubtotal = $_checkoutHelper->getSubtotalInclTax($_item); ?>
+        <span class="cart-price">
+            <?php if ($_weeeHelper->typeOfDisplay($_item, [0, 1, 4], 'sales') && $_weeeAmount): ?>
+                <?= $_checkoutHelper->formatPrice($_inclSubtotal + $_weeeHelper->getRowWeeeTaxInclTax($_item)) ?>
+            <?php elseif ($_weeeHelper->typeOfDisplay($_item, 2, 'sales') && $_weeeAmount): ?>
+                <?= $_checkoutHelper->formatPrice($_inclSubtotal + $_weeeHelper->getRowWeeeTaxInclTax($_item)) ?>
+            <?php else: ?>
+                <?= $_checkoutHelper->formatPrice($_inclSubtotal - $_item->getWeeeTaxRowDisposition()) ?>
+            <?php endif ?>
+        </span>
+        <?php if ($_weeeApplied && $_weeeHelper->typeOfDisplay($_item, [1, 2], 'sales') && $_weeeAmount): ?>
+            <span class="weee-info" data-tooltip="<?= strip_tags($_checkoutHelper->formatPrice($_inclSubtotal - $_item->getWeeeTaxRowDisposition())) ?><?php foreach ($_weeeApplied as $tax): ?> + <?= $this->escapeHtml($tax['title']) ?> <?= strip_tags($_checkoutHelper->formatPrice($tax['row_amount_incl_tax'])) ?><?php endforeach ?>"><?= $this->getIconSvg('info-circle') ?></span>
+        <?php endif ?>
+    </td>
+    <?php endif ?>
+</tr>

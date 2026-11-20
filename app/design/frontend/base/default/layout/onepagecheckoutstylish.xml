@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <!--
+        The one-step checkout. The block has no template and no markup: it adds the
+        stylesheet of the preset saved in System > Configuration > Design > One-Step
+        Checkout Style, and adds nothing when the preset is disabled.
+
+        Handle declared by Mage_Checkout_OnepageController::indexAction() when
+        checkout/options/onestep_checkout_enabled is on.
+    -->
+    <checkout_onepage_index_onestep>
+        <reference name="head">
+            <block type="onepagecheckoutstylish/stylesheet" name="onepagecheckoutstylish.stylesheet" />
+        </reference>
+    </checkout_onepage_index_onestep>
+
+    <!--
+        Product image in the order summary.
+
+        The review is rendered on its own, by Mage_Checkout_OnepageController::
+        reviewAction(), with the checkout_onepage_review handle only: the block of
+        this module is not in that layout, so the item renderers are re-registered
+        here, with the engine's own renderer classes and the template of this module.
+        "root" is the review info block, the one that holds the renderers.
+
+        ifconfig runs the actions only while the option is on: with it off the
+        engine keeps its template, and nothing of this module reaches the summary.
+    -->
+    <checkout_onepage_review>
+        <reference name="root">
+            <action method="addItemRender" ifconfig="design/onepagecheckoutstylish/product_images">
+                <type>default</type>
+                <block>checkout/cart_item_renderer</block>
+                <template>onepagecheckoutstylish/checkout/onepage/review/item.phtml</template>
+            </action>
+            <action method="addItemRender" ifconfig="design/onepagecheckoutstylish/product_images">
+                <type>grouped</type>
+                <block>checkout/cart_item_renderer_grouped</block>
+                <template>onepagecheckoutstylish/checkout/onepage/review/item.phtml</template>
+            </action>
+            <action method="addItemRender" ifconfig="design/onepagecheckoutstylish/product_images">
+                <type>configurable</type>
+                <block>checkout/cart_item_renderer_configurable</block>
+                <template>onepagecheckoutstylish/checkout/onepage/review/item.phtml</template>
+            </action>
+        </reference>
+    </checkout_onepage_review>
+</layout>

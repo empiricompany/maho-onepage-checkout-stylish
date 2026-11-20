@@ -1,0 +1,393 @@
+/*
+ * One-step checkout - everything shared, imported by every preset.
+ *
+ * Every step in the left column, the order summary sticky in the right one; inside
+ * that, the flat look of the steps, the step marker, the labels inside the fields, the
+ * civic number and the product image in the summary. A preset adds the skin only: the
+ * colour of the summary half, or the tint of the page and the card.
+ *
+ * The template groups the sections in two wrappers (.onestep-column-address and
+ * .onestep-column-right) and a stylesheet cannot move a child from one wrapper to the
+ * other, so both wrappers become display: contents and the sections take their place
+ * on the grid directly.
+ *
+ * From 1024px the checkout takes the whole width and the page becomes one grid of two
+ * equal halves, the title and the steps in the left one, the summary in the right one.
+ * The right half is the painted area: the style fills it through
+ * --checkout-summary-column-bg and leaves it transparent when it has nothing to paint
+ * there.
+ *
+ * The engine declares its one-step rules in @layer components
+ * (css/onestep-checkout.css); these rules are unlayered, so they win whatever order the
+ * two stylesheets load in.
+ *
+ * Knobs, set on the summary grid and inherited by it:
+ *   --checkout-panel-width     width of the summary half
+ *   --checkout-divider-gutter  distance between each half and the divider
+ *   --checkout-summary-width   width of the summary column content
+ *   --checkout-top-gutter      distance from the header hairline to the title and to
+ *                              the summary heading
+ *   --checkout-panel-offset    distance from the top of the viewport to the content
+ *                              column: the viewport heights are measured below it
+ */
+
+/* ---------------------------------------------------------------------------
+ * Flat sections, at every width: title and fields, no card chrome
+ * --------------------------------------------------------------------------- */
+
+.onestep-checkout .onestep-section-content {
+    margin-top: 0.75rem;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+}
+
+/* Design > One-Step Checkout Style > Hide the line under the step titles (on by
+   default): the block adds this class to the body, and without it the engine's
+   accent hairline under the heading stays */
+body.onepagecheckoutstylish-no-title-lines .onestep-checkout .onestep-section-header h2 {
+    border-bottom: 0;
+    padding: 0;
+}
+
+.onestep-checkout #onestep-review .buttons-set,
+.onestep-checkout #onestep-review #review-buttons-container {
+    padding-inline: 0;
+}
+
+/* ---------------------------------------------------------------------------
+ * Step marker (Design > One-Step Checkout Style > Step marker): the block adds
+ * one body class to the page when the marker is not the icon of the theme
+ * --------------------------------------------------------------------------- */
+
+/* "No marker": the headings keep the text alone */
+body.onepagecheckoutstylish-no-icons .onestep-checkout .onestep-section-header h2 svg {
+    display: none;
+}
+
+/* Input labels inside the field (skin js/onepagecheckoutstylish/labels.js): the
+   label leaves the visual flow but stays in the page for screen readers and the
+   engine's validation, which look it up by id */
+.onepagecheckoutstylish-label-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+/* Street lines: civic number (skin js/onepagecheckoutstylish/street.js): the row
+   of the first street line and the row of the civic number share one grid row,
+   half each. Every other row of the form spans the grid. */
+ul.onepagecheckoutstylish-street-list {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 0.75rem;
+    align-items: start;
+}
+
+ul.onepagecheckoutstylish-street-list > li {
+    grid-column: 1 / -1;
+}
+
+ul.onepagecheckoutstylish-street-list > li.onepagecheckoutstylish-street-first {
+    grid-column: 1;
+}
+
+ul.onepagecheckoutstylish-street-list > li.onepagecheckoutstylish-street-civic {
+    grid-column: 2;
+}
+
+/* "Numbered steps": the icon gives way to the number of the step, counted in the
+   reading order of the markup; the summary is not a step and the hidden shipping
+   block does not count */
+body.onepagecheckoutstylish-step-numbers .onestep-checkout .onestep-section-header h2 svg {
+    display: none;
+}
+
+body.onepagecheckoutstylish-step-numbers .main {
+    counter-reset: checkout-step;
+}
+
+body.onepagecheckoutstylish-step-numbers .onestep-checkout > .onestep-column > .onestep-section:not(#onestep-review) {
+    counter-increment: checkout-step;
+}
+
+body.onepagecheckoutstylish-step-numbers .onestep-checkout > .onestep-column > .onestep-section:not(#onestep-review) > .onestep-section-header h2::before {
+    content: counter(checkout-step);
+    display: inline-grid;
+    flex: 0 0 auto;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 999px;
+    background-color: var(--color-primary, #2563eb);
+    color: var(--color-primary-content, #ffffff);
+    font-family: var(--font-body, inherit);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0;
+}
+
+/* Product image in the order summary: the template of the module is registered
+   from the layout while "Product image in the order summary" is on, so these
+   classes only exist when the option is on. The thumbnail uses the slot of the
+   theme and the tokens are read with a fallback, to hold on any theme. */
+.onepagecheckoutstylish-review-item {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+}
+
+/* The tile and the badge share one box: the badge overlaps the corner of the tile */
+.onepagecheckoutstylish-review-media {
+    position: relative;
+    flex: 0 0 auto;
+}
+
+/* The tile of the cart: a square box, the image fitted inside it, a hairline and the
+   surface of the theme behind. A product with a photo on a white background reads as
+   a framed thumbnail in both presets. */
+.onepagecheckoutstylish-review-image {
+    flex: 0 0 auto;
+    display: block;
+    width: var(--onepagecheckoutstylish-review-image-size, 4rem);
+    aspect-ratio: 1 / 1;
+    padding: 0.25rem;
+    border: 1px solid var(--color-base-300, #e5e7eb);
+    border-radius: var(--radius-field, 0.5rem);
+    background-color: var(--color-base-100, #ffffff);
+}
+
+.onepagecheckoutstylish-review-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* A flex item keeps its content width by default: the name needs the room it has,
+   the engine then ellipsises it inside */
+.onepagecheckoutstylish-review-details {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+/* The engine aligns the cells of the row on their baseline: with the image in the
+   first cell the price, the quantity and the subtotal would drop to the bottom */
+.onepagecheckoutstylish-review-row > td {
+    vertical-align: middle;
+}
+
+/* The products of the summary are divided by a dashed hairline, the last row
+   included: that is the line that closes the list against the totals. The header
+   keeps the hairline of the theme. */
+.onestep-checkout #checkout-review-table tbody > tr > td {
+    border-bottom: 1px dashed var(--color-base-300, #e5e7eb);
+}
+
+/* The list is already closed by the dashed line of its last row: the totals start
+   without a border of their own */
+.onestep-checkout #checkout-review-table tfoot tr:first-child > td {
+    border-top: 0;
+}
+
+/* Quantity on the thumbnail (Design > One-Step Checkout Style > Quantity as a badge
+   on the image): the block adds this class to the body, and with it the count leaves
+   its column for the corner of the tile and the row keeps the product and the total
+   only. Without the class the count stays hidden: the quantity column already says
+   it. */
+.onepagecheckoutstylish-review-count {
+    display: none;
+}
+
+body.onepagecheckoutstylish-review-count-badge .onepagecheckoutstylish-review-count {
+    display: grid;
+    place-items: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: var(--onepagecheckoutstylish-review-count-size, 1.25rem);
+    height: var(--onepagecheckoutstylish-review-count-size, 1.25rem);
+    padding-inline: 0.25rem;
+    border: 2px solid var(--color-base-100, #ffffff);
+    border-radius: 999px;
+    background-color: var(--color-base-content, #333333);
+    color: var(--color-base-100, #ffffff);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1;
+    transform: translate(45%, -45%);
+}
+
+/* The price and the quantity columns collapse: their cells are emptied but stay in
+   the row. A cell taken out of the flow (display: none) shifts the subtotal of the
+   row into the next column, and the header and the totals of the footer stay where
+   they were: emptied, they leave the column of the totals to the rows as well. */
+body.onepagecheckoutstylish-review-count-badge #checkout-review-table :is(.onepagecheckoutstylish-review-price, .onepagecheckoutstylish-review-qty),
+body.onepagecheckoutstylish-review-count-badge #checkout-review-table thead tr:first-child > th:nth-child(2),
+body.onepagecheckoutstylish-review-count-badge #checkout-review-table thead tr:first-child > th:nth-child(3),
+body.onepagecheckoutstylish-review-count-badge #checkout-review-table thead tr:nth-child(2) > th:nth-child(-n + 2) {
+    width: 0;
+    max-width: 0;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    font-size: 0;
+    line-height: 0;
+    white-space: nowrap;
+}
+
+/* The price markup (the WEEE note is a tooltip on an icon) may not show through the
+   collapsed cell */
+body.onepagecheckoutstylish-review-count-badge #checkout-review-table .onepagecheckoutstylish-review-price > * {
+    display: none;
+}
+
+/* Under the engine's 771px breakpoint the summary keeps its four columns in a
+   narrow row: a smaller thumbnail leaves the name readable */
+@media (max-width: 770px) {
+    .onepagecheckoutstylish-review-image {
+        width: var(--onepagecheckoutstylish-review-image-mobile-size, 2.5rem);
+    }
+
+    body.onepagecheckoutstylish-review-count-badge .onepagecheckoutstylish-review-count {
+        --onepagecheckoutstylish-review-count-size: 1.125rem;
+        border-width: 1px;
+        font-size: 0.625rem;
+    }
+}
+
+/* ---------------------------------------------------------------------------
+ * From 771px (the engine's --breakpoint-nav): every step in the left column, the
+ * order summary sticky in the right one
+ * --------------------------------------------------------------------------- */
+
+@media (min-width: 771px) {
+    .onestep-checkout {
+        /* The summary spans many rows to have room to stick; with the engine's row
+           gap each of those empty rows would add vertical space. */
+        row-gap: 0;
+    }
+
+    .onestep-checkout > .onestep-column {
+        display: contents;
+    }
+
+    .onestep-checkout > .onestep-column > .onestep-section {
+        grid-column: 1;
+        margin-block-end: 1.5rem;
+    }
+
+    .onestep-checkout > .onestep-column > #onestep-review {
+        grid-column: 2;
+        grid-row: 1 / span 99;
+        align-self: start;
+        position: sticky;
+        top: 1rem;
+        margin-block-end: 0;
+        /* A cart taller than the viewport would push the summary out of reach: it
+           scrolls inside its own box instead of leaving the column. */
+        max-height: calc(100dvh - 2rem);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+    }
+}
+
+/* ---------------------------------------------------------------------------
+ * From 1024px: full-bleed two columns, the title, the steps and the summary on
+ * one grid
+ * --------------------------------------------------------------------------- */
+
+@media (min-width: 1024px) {
+    body.checkout-onepage-index:has(.onestep-checkout) :is(.main-container, .main) {
+        max-width: none;
+        width: 100%;
+        padding-inline: 0;
+    }
+
+    /* The columns start right under the hairline of the minimal header: drop the
+       gap the engine leaves between the header and the page body. */
+    body.checkout-onepage-index:has(.onestep-checkout) .page-header-minimal {
+        margin-block-end: 0;
+    }
+
+    body.checkout-onepage-index:has(.onestep-checkout) .main {
+        --checkout-panel-width: 50%;
+        --checkout-divider-gutter: clamp(1rem, 2vw, 2rem);
+        --checkout-summary-width: clamp(20rem, 34vw, 36rem);
+        --checkout-panel-offset: 7rem;
+        --checkout-top-gutter: 1rem;
+
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) var(--checkout-panel-width);
+        gap: 0;
+        padding-block-start: 0;
+        min-height: calc(100dvh - var(--checkout-panel-offset));
+
+        /* The painted half. The style decides the colour through the variable; with
+           none set the gradient is transparent and the page keeps its own. */
+        background-image: linear-gradient(
+            to right,
+            transparent calc(100% - var(--checkout-panel-width)),
+            var(--checkout-summary-column-bg, transparent) calc(100% - var(--checkout-panel-width))
+        );
+    }
+
+    /* The content column and the checkout carry no box of their own: their children
+       take their place on the grid above (the column wrappers are already display:
+       contents from 771px) */
+    body.checkout-onepage-index:has(.onestep-checkout) .col-main,
+    body.checkout-onepage-index:has(.onestep-checkout) .onestep-checkout {
+        display: contents;
+    }
+
+    /* Title row, ending against the divider */
+    body.checkout-onepage-index:has(.onestep-checkout) .onestep-header {
+        grid-column: 1;
+        grid-row: 1;
+        justify-self: end;
+        margin-inline-end: var(--checkout-divider-gutter);
+        width: min(100% - 2 * var(--checkout-divider-gutter), 40rem);
+        padding-block-start: var(--checkout-top-gutter);
+    }
+
+    /* The steps end against the divider, at the same distance as the title */
+    body.checkout-onepage-index:has(.onestep-checkout) .onestep-checkout > .onestep-column > .onestep-section {
+        justify-self: end;
+        margin-inline-end: var(--checkout-divider-gutter);
+        width: min(100% - 2 * var(--checkout-divider-gutter), 40rem);
+    }
+
+    /* The summary starts beside the title, from the divider */
+    body.checkout-onepage-index:has(.onestep-checkout) #onestep-review {
+        justify-self: start;
+        margin-inline-start: var(--checkout-divider-gutter);
+        width: min(100% - 2 * var(--checkout-divider-gutter), var(--checkout-summary-width));
+    }
+
+    /* The summary heading takes the title face of the theme and a size of its own
+       (a column title, smaller than the page title), starting level with the title */
+    body.checkout-onepage-index:has(.onestep-checkout) #onestep-review .onestep-section-header {
+        padding-block-start: var(--checkout-top-gutter);
+    }
+
+    body.checkout-onepage-index:has(.onestep-checkout) #onestep-review .onestep-section-header h2 {
+        font-family: var(--font-title, var(--font-display));
+        font-weight: var(--title-weight, 600);
+        font-size: 1.375rem;
+        line-height: 1.25;
+        letter-spacing: var(--title-tracking, -0.015em);
+    }
+
+    /* The icon scales with the heading instead of keeping the engine's 24px */
+    body.checkout-onepage-index:has(.onestep-checkout) #onestep-review .onestep-section-header h2 svg {
+        width: 1em;
+        height: 1em;
+    }
+}

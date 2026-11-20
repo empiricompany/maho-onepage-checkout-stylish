@@ -1,0 +1,39 @@
+{
+    "name": "empiricompany/maho-onepage-checkout-stylish",
+    "description": "One-step checkout style presets for Maho: every step in the left column, the order summary pinned on a sticky full-height panel on the right, with a store-scoped on/off switch",
+    "license": "OSL-3.0",
+    "type": "maho-module",
+    "require": {
+        "php": ">=8.5"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "*",
+        "mahocommerce/maho": "dev-main",
+        "mahocommerce/maho-phpstan-plugin": "*",
+        "phpstan/phpstan": "*",
+        "phpstan/phpstan-deprecation-rules": "*",
+        "phpstan/phpstan-strict-rules": "*",
+        "rector/rector": "*"
+    },
+    "config": {
+        "allow-plugins": {
+            "mahocommerce/maho-composer-plugin": true
+        },
+        "platform": {
+            "php": "8.5.12"
+        }
+    },
+    "scripts": {
+        "cs": "vendor/bin/php-cs-fixer fix --dry-run --diff",
+        "cs-fix": "vendor/bin/php-cs-fixer fix",
+        "phpstan": "vendor/bin/phpstan analyse",
+        "rector": "vendor/bin/rector --dry-run",
+        "check": [
+            "@cs",
+            "@phpstan",
+            "@rector"
+        ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

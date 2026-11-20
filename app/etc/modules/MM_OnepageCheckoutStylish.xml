@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <MM_OnepageCheckoutStylish>
+            <active>true</active>
+            <codePool>community</codePool>
+            <depends>
+                <Mage_Checkout/>
+                <Mage_Page/>
+            </depends>
+        </MM_OnepageCheckoutStylish>
+    </modules>
+</config>

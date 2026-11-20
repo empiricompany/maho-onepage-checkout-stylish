@@ -1,0 +1,16 @@
+/*
+ * One-step checkout, "divider" preset.
+ *
+ * The skin is one thing: the summary half is filled with the tint of the theme, so a
+ * divider runs down the page between the steps and the order summary, and the steps
+ * stay on the page colour.
+ *
+ * base.css fills that half with --checkout-summary-column-bg; the preset only chooses
+ * the colour.
+ */
+
+@import url("base.css");
+
+body.checkout-onepage-index:has(.onestep-checkout) {
+    --checkout-summary-column-bg: var(--color-base-200, #f5f5f5);
+}

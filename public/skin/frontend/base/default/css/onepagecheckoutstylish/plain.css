@@ -1,0 +1,41 @@
+/*
+ * One-step checkout, "plain" preset, the default one.
+ *
+ * The skin is the tint alone: the whole page is tinted, the steps stay free on it (no
+ * card around them, the fields keep the look of the theme) and the order summary
+ * becomes a white card on top of it. The half of the summary is not painted, unlike
+ * the "divider" preset.
+ */
+
+@import url("base.css");
+
+body.checkout-onepage-index:has(.onestep-checkout) {
+    --checkout-summary-column-bg: transparent;
+}
+
+/* The tint covers the whole page, at every width */
+body.checkout-onepage-index:has(.onestep-checkout) .main {
+    background-color: var(--color-base-200, #f5f5f5);
+}
+
+/* The summary as a card. The engine's max-height/overflow from base.css keeps it
+   scrolling inside itself when the cart is taller than the viewport. */
+body.checkout-onepage-index:has(.onestep-checkout) #onestep-review {
+    margin-block-start: var(--checkout-top-gutter, 1rem);
+    padding: 1.5rem;
+    border: 1px solid var(--color-base-300, #e5e5e5);
+    border-radius: var(--radius-box, 1rem);
+    background-color: var(--color-base-100, #ffffff);
+    box-shadow:
+        0 1px 2px rgb(0 0 0 / 0.04),
+        0 8px 24px rgb(0 0 0 / 0.06);
+}
+
+@media (min-width: 1024px) {
+    /* Inside the card the padding gives the heading its distance: the page-title
+       gutter would add a second one. The heading itself keeps the page-title
+       recipe from base.css, icon included, like the other presets. */
+    body.checkout-onepage-index:has(.onestep-checkout) #onestep-review .onestep-section-header {
+        padding-block-start: 0;
+    }
+}

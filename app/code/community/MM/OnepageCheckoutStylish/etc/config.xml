@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <MM_OnepageCheckoutStylish>
+            <version>1.0.0</version>
+        </MM_OnepageCheckoutStylish>
+    </modules>
+
+    <global>
+        <blocks>
+            <onepagecheckoutstylish>
+                <class>MM_OnepageCheckoutStylish_Block</class>
+            </onepagecheckoutstylish>
+        </blocks>
+
+        <models>
+            <onepagecheckoutstylish>
+                <class>MM_OnepageCheckoutStylish_Model</class>
+            </onepagecheckoutstylish>
+        </models>
+
+        <helpers>
+            <onepagecheckoutstylish>
+                <class>MM_OnepageCheckoutStylish_Helper</class>
+            </onepagecheckoutstylish>
+        </helpers>
+    </global>
+
+    <frontend>
+        <layout>
+            <updates>
+                <onepagecheckoutstylish>
+                    <file>onepagecheckoutstylish.xml</file>
+                </onepagecheckoutstylish>
+            </updates>
+        </layout>
+
+        <translate>
+            <modules>
+                <MM_OnepageCheckoutStylish>
+                    <files>
+                        <default>MM_OnepageCheckoutStylish.csv</default>
+                    </files>
+                </MM_OnepageCheckoutStylish>
+            </modules>
+        </translate>
+    </frontend>
+
+    <default>
+        <design>
+            <onepagecheckoutstylish>
+                <enabled>1</enabled>
+                <style>divider</style>
+                <step_marker>steps</step_marker>
+                <label_style>placeholders</label_style>
+                <street_layout>standard</street_layout>
+                <product_images>1</product_images>
+                <product_qty_badge>1</product_qty_badge>
+                <hide_title_lines>1</hide_title_lines>
+            </onepagecheckoutstylish>
+        </design>
+    </default>
+</config>

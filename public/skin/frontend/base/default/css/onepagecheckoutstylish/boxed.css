@@ -1,0 +1,94 @@
+/*
+ * One-step checkout, "boxed" preset.
+ *
+ * Every step is a white box standing on the tinted page: hairline, rounded corners,
+ * bordered fields and the order summary as a white card closed by the order button,
+ * full width and pill shaped.
+ *
+ * Every colour comes from the theme (the surface and the line tokens, the primary of
+ * the buttons and of the focus ring), so the preset keeps the identity of the shop.
+ * base.css still owns the geometry, the sticky summary and the labels inside the
+ * fields: this preset only repaints.
+ */
+
+@import url("base.css");
+
+body.checkout-onepage-index:has(.onestep-checkout) {
+    --checkout-summary-column-bg: transparent;
+}
+
+/* The tint covers the whole page, at every width: the boxes stand on it */
+body.checkout-onepage-index:has(.onestep-checkout) .main {
+    background-color: var(--color-base-200, #f5f5f5);
+}
+
+/* ---------------------------------------------------------------------------
+ * Every step is a box: hairline, rounded corners, the surface of the theme
+ * --------------------------------------------------------------------------- */
+
+body.checkout-onepage-index:has(.onestep-checkout) .onestep-checkout > .onestep-column > .onestep-section:not(#onestep-review) {
+    padding: 1rem 1.125rem 1.25rem;
+    border: 1px solid var(--color-base-300, #e5e7eb);
+    border-radius: var(--radius-box, 0.75rem);
+    background-color: var(--color-base-100, #ffffff);
+}
+
+/* The box already gives the heading its distance from the top */
+body.checkout-onepage-index:has(.onestep-checkout) .onestep-checkout > .onestep-column > .onestep-section:not(#onestep-review) > .onestep-section-header {
+    padding-block-start: 0;
+}
+
+/* ---------------------------------------------------------------------------
+ * Fields: hairline border, small radius, the focus ring of the theme
+ * --------------------------------------------------------------------------- */
+
+body.checkout-onepage-index:has(.onestep-checkout) .onestep-checkout :is(.input-text, select, textarea) {
+    border: 1px solid var(--color-base-300, #e5e7eb);
+    border-radius: var(--radius-field, 0.5rem);
+    background-color: var(--color-base-100, #ffffff);
+}
+
+body.checkout-onepage-index:has(.onestep-checkout) .onestep-checkout :is(.input-text, select, textarea):focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-primary), transparent 75%);
+    outline: none;
+}
+
+/* The chosen shipping method and payment method take the accent of the theme */
+body.checkout-onepage-index:has(.onestep-checkout) .onestep-checkout :is(.payment-methods dt, .sp-methods dt):has(input[type="radio"]:checked) {
+    border-color: var(--color-primary);
+}
+
+/* ---------------------------------------------------------------------------
+ * The order summary: a white card with a bold first total
+ * --------------------------------------------------------------------------- */
+
+body.checkout-onepage-index:has(.onestep-checkout) #onestep-review {
+    margin-block-start: var(--checkout-top-gutter, 1rem);
+    padding: 1rem 1.125rem 1.125rem;
+    border: 1px solid var(--color-base-300, #e5e7eb);
+    border-radius: var(--radius-box, 0.75rem);
+    background-color: var(--color-base-100, #ffffff);
+}
+
+body.checkout-onepage-index:has(.onestep-checkout) #onestep-review .onestep-section-header {
+    padding-block-start: 0;
+}
+
+/* The dashed line of the last product closes the list, so the total underneath needs
+   the distance but no border, and it is the bold one */
+body.checkout-onepage-index:has(.onestep-checkout) #onestep-review #checkout-review-table tfoot tr:first-child td {
+    padding-block-start: 0.875rem;
+    font-weight: 700;
+}
+
+/* ---------------------------------------------------------------------------
+ * The order button: the colours and the hover of the theme, the shape of the
+ * marketplace (full width, pill)
+ * --------------------------------------------------------------------------- */
+
+body.checkout-onepage-index:has(.onestep-checkout) #onestep-review #review-buttons-container .button.btn-checkout {
+    width: 100%;
+    padding: 0.625rem 1.25rem;
+    border-radius: 100px;
+}

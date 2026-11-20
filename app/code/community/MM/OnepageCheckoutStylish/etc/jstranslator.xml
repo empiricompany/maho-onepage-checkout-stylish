@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<jstranslator>
+    <script path="onepagecheckoutstylish/street.js" module="onepagecheckoutstylish">
+        <civic-number translate="message">
+            <message>Civic number</message>
+        </civic-number>
+    </script>
+</jstranslator>

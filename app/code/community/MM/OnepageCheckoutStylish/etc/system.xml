@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <design>
+            <groups>
+                <onepagecheckoutstylish translate="label comment" module="onepagecheckoutstylish">
+                    <label>One-Step Checkout Style</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>900</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <enabled translate="label comment">
+                            <label>Enable the styled one-step checkout</label>
+                            <comment>Applies the preset and the options below to the one-step checkout. When disabled the engine's own checkout is left untouched.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enabled>
+                        <style translate="label comment">
+                            <label>Style</label>
+                            <comment>Preset to apply. One preset ships today; new presets are listed here as they are added.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>onepagecheckoutstylish/style</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </style>
+                        <step_marker translate="label comment">
+                            <label>Step marker</label>
+                            <comment>What marks each step heading: the number of the step (default), the icon of the theme, or nothing at all.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>onepagecheckoutstylish/marker</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </step_marker>
+                        <hide_title_lines translate="label comment">
+                            <label>Hide the line under the step titles</label>
+                            <comment>On by default: the titles of the steps read as plain text. Turn it off to bring back the accent hairline the base theme draws under them.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>32</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </hide_title_lines>
+                        <label_style translate="label comment">
+                            <label>Input labels</label>
+                            <comment>Label inside the field (default): a text field gets it as its placeholder, a select in the text of its empty option. Radio groups and checkboxes keep their labels; off, the label sits above the field.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>onepagecheckoutstylish/label</source_model>
+                            <sort_order>35</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </label_style>
+                        <street_layout translate="label comment">
+                            <label>Street lines</label>
+                            <comment>Second line as the civic number of the first, on the same row and required. Needs two street lines on the address; with one line the checkout is left alone.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>onepagecheckoutstylish/street</source_model>
+                            <sort_order>37</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </street_layout>
+                        <product_images translate="label comment">
+                            <label>Product image in the order summary</label>
+                            <comment>On by default: the summary row shows the thumbnail of the theme, next to the product name. Off leaves the row of the engine untouched.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>38</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </product_images>
+                        <product_qty_badge translate="label comment">
+                            <label>Quantity as a badge on the image</label>
+                            <comment>Needs the product image. On, the quantity moves onto the thumbnail and the summary row keeps only the total: the quantity and the unit price columns go away. Off, the row keeps all its columns.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>39</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <product_images>1</product_images>
+                            </depends>
+                        </product_qty_badge>
+                    </fields>
+                </onepagecheckoutstylish>
+            </groups>
+        </design>
+    </sections>
+</config>
