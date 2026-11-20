@@ -1,11 +1,11 @@
-# MM_OnepageCheckoutStylish
+# Maho OnePage Checkout Stylish
 
 Restyles the one-step checkout of the storefront without touching the engine: the
 steps in the left column, the order summary in the right one, three styles to choose
 from and a few options that work the same with any of them. The colours always come
 from the theme.
 
-![The three styles](docs/onepage-checkout-styles.gif)
+<img width="1600" height="1476" alt="onepage-checkout-styles" src="https://github.com/user-attachments/assets/d2da3eb0-e7fa-4680-a848-3fc15ec74cc9" />
 
 Every setting lives under **System > Configuration > Design > One-Step Checkout
 Style** and can be set per website and per store view.
@@ -56,7 +56,8 @@ below works the same with all three.
 
 ## Input labels
 
-![Input labels](docs/onepage-checkout-labels.gif)
+<img width="1600" height="1476" alt="onepage-checkout-labels" src="https://github.com/user-attachments/assets/2edd931b-4c6a-4936-a81e-75d7b7f26dd9" />
+
 
 `placeholders` moves the label inside the field, the asterisk of the required ones
 included. A select has no room for a placeholder, so its label goes into the empty
@@ -64,7 +65,7 @@ option of the list; radio groups and checkboxes keep their labels.
 
 ## Street lines
 
-![Street lines](docs/onepage-checkout-street-lines.gif)
+<img width="1600" height="1476" alt="onepage-checkout-street-lines" src="https://github.com/user-attachments/assets/edfec173-615c-404c-92da-619bf0331e16" />
 
 `civic` turns the second street line into the civic number of the first: same row,
 half each, required and translated. With one street line on the address there is
@@ -72,7 +73,7 @@ nothing to turn into a civic number and the form stays as it is.
 
 ## Step marker and title line
 
-![Step marker](docs/onepage-checkout-step-marker.gif)
+<img width="1600" height="1476" alt="onepage-checkout-step-marker" src="https://github.com/user-attachments/assets/5f507200-7931-4094-ad1d-51cf1862fabd" />
 
 The counter follows the order of the page and skips both the summary and the hidden
 shipping block. Turning off the line under the titles brings back the accent hairline
@@ -80,7 +81,7 @@ of the base theme.
 
 ## Product image and quantity
 
-![Product image and quantity](docs/onepage-checkout-product-image.gif)
+<img width="1600" height="1476" alt="onepage-checkout-product-image" src="https://github.com/user-attachments/assets/042af82a-ad68-433f-840f-ac2b6b13b658" />
 
 The thumbnail sits in a square tile like the one of the cart. With the quantity as a
 badge the unit price and the quantity columns go away: the row keeps the product and
