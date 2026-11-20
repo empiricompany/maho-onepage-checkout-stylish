@@ -24,16 +24,16 @@ composer require empiricompany/maho-onepage-checkout-stylish
 
 ## Configuration
 
-| Field | Config path | Default | What it does |
-| --- | --- | --- | --- |
-| Enable the styled one-step checkout | `design/onepagecheckoutstylish/enabled` | `1` | Off leaves the checkout exactly as the engine draws it |
-| Style | `design/onepagecheckoutstylish/style` | `divider` | `divider`, `plain` or `boxed` |
-| Step marker | `design/onepagecheckoutstylish/step_marker` | `steps` | The number of the step (`steps`), the icon of the theme (`icons`) or nothing (`none`) |
-| Hide the line under the step titles | `design/onepagecheckoutstylish/hide_title_lines` | `1` | The titles read as plain text, or keep the accent hairline of the base theme |
-| Input labels | `design/onepagecheckoutstylish/label_style` | `placeholders` | The label inside the field (`placeholders`) or above it (`labels`) |
-| Street lines | `design/onepagecheckoutstylish/street_layout` | `standard` | One row per address line (`standard`), or the second line as the civic number of the first (`civic`) |
-| Product image in the order summary | `design/onepagecheckoutstylish/product_images` | `1` | The thumbnail of the theme beside the product name |
-| Quantity as a badge on the image | `design/onepagecheckoutstylish/product_qty_badge` | `1` | Needs the product image: the quantity moves onto the thumbnail and the row keeps only the total |
+| Field | Default | What it does |
+| --- | --- | --- |
+| Enable the styled one-step checkout | `1` | Off leaves the checkout exactly as the engine draws it |
+| Style | `divider` | `divider`, `plain` or `boxed` |
+| Step marker | `steps` | The number of the step (`steps`), the icon of the theme (`icons`) or nothing (`none`) |
+| Hide the line under the step titles | `1` | The titles read as plain text, or keep the accent hairline of the base theme |
+| Input labels | `placeholders` | The label inside the field (`placeholders`) or above it (`labels`) |
+| Street lines | `standard` | One row per address line (`standard`), or the second line as the civic number of the first (`civic`) |
+| Product image in the order summary | `1` | The thumbnail of the theme beside the product name |
+| Quantity as a badge on the image | `1` | Needs the product image: the quantity moves onto the thumbnail and the row keeps only the total |
 
 From the CLI:
 
